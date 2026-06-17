@@ -44,8 +44,8 @@ description: >
   phrases, e.g. "Triggers on /{slug}".
 allowed-tools: Read, Bash, Write
 {gate_line}preconditions:
-  env: [ANTHROPIC_API_KEY]
-  files: [.claude/skills/{slug}/scripts/{script_name}.py, .venv/bin/activate]
+  env: []
+  files: [.claude/skills/{slug}/scripts/{script_name}.py]
 execution_contract: {contract}
 ---
 
