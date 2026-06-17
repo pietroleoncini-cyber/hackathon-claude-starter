@@ -1,0 +1,43 @@
+# optimize-artifact run config — copy to .tmp/optimize/<run_tag>/config.yaml and fill in.
+# All paths are relative to the workspace root (or absolute).
+
+run_tag: testimonial-tone-jun18      # unique; branch optimize/<run_tag> must NOT already exist
+
+# 1. THE THING TO OPTIMIZE — the single editable artifact.
+target:
+  path: .claude/skills/generate-testimonial-copy/SKILL.md   # the file the loop edits
+
+# 2. THE OBJECTIVE — how one score is formed and which direction is better.
+objective:
+  direction: higher            # higher | lower  (LLM-judge scores are usually higher-better)
+  aggregate: mean              # mean | min | pass_rate  (min = optimize worst case)
+  samples_per_case: 3          # re-run each case N times and average — tames LLM noise
+
+# 3. THE RUNNER — how to execute the artifact on one eval input.
+runner:
+  type: prompt                 # prompt = toolless completion (safe, side-effect-free)
+  model: claude-sonnet-4-6     # the model the artifact actually runs on
+  # For targets whose value is in TOOL EXECUTION, use a mock harness instead:
+  # type: command
+  # cmd: ".venv/bin/python my_mock_runner.py --artifact {artifact} --input {input}"
+  #   {artifact} -> temp file with the current artifact text;  {input} -> the eval case input.
+  #   The harness MUST mock every side effect (no real Slack/account/Sheet writes).
+
+# 4. THE JUDGE — frozen grader. rubric_path must live OUTSIDE the editable target.
+judge:
+  model: claude-opus-4-8       # a strong model; kept fixed for the whole run
+  rubric_path: .tmp/optimize/testimonial-tone-jun18/rubric.md
+
+# 5. THE EVAL SET — fixed test cases, one JSON object per line. Frozen for the whole run.
+evals_path: .tmp/optimize/testimonial-tone-jun18/evals.jsonl
+
+# 6. BUDGET / STOP — the loop terminates on whichever hits first.
+budget:
+  max_iterations: 40
+  max_no_improve: 8            # stop after this many consecutive non-improving experiments
+  max_usd: 5.0                 # hard $ ceiling across all eval runs
+
+# 7. SIDE EFFECTS — declare honestly. If true, runner.type MUST be 'command' (a mock), or
+#    init refuses to run. Leave false only for targets graded purely on their text output.
+side_effects:
+  has_side_effects: false

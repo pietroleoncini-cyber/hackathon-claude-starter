@@ -2,3 +2,4 @@
 # Add more as your skills need them (e.g. requests, anthropic, gspread).
 python-dotenv>=1.0.0
 PyYAML>=6.0
+anthropic>=0.40.0   # used by the optimize-artifact skill (LLM-judge); needs ANTHROPIC_API_KEY to run

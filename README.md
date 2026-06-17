@@ -36,10 +36,12 @@ execution/                    ← shared framework helpers (no secrets)
   scaffold.py                 ← generate a new skill + script stub in one command
   validate_preconditions.py   ← check a skill's preconditions before running it
   run_log.py                  ← start/complete/fail tokens for resumable pipelines
-.claude/skills/               ← 3 example skills to learn the pattern from
+.claude/skills/               ← 4 example skills to learn the pattern from
   clarify-requirements/       ← (auto-invocable) ask clarifying questions before work
   write-prompt-contract/      ← (auto-invocable) define success/constraints/failure
   verify-with-subagents/      ← (auto-invocable) agent-reviews-agent quality loop
+  optimize-artifact/          ← (advanced, gated) hill-climb a prompt against an LLM-judge
+                                 eval set — needs an ANTHROPIC_API_KEY in .env to run
 .env.example                  ← template; the setup copies it to .env (stays empty — no keys needed)
 requirements.txt              ← Python deps for the helpers
 ```
