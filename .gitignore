@@ -1,0 +1,13 @@
+# Secrets & local config — never commit
+.env
+credentials.json
+token.json
+*.json.local
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Intermediates — always regenerated
+.tmp/

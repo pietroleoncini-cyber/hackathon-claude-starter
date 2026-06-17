@@ -1,0 +1,4 @@
+# Dependencies for the framework helpers in execution/.
+# Add more as your skills need them (e.g. requests, anthropic, gspread).
+python-dotenv>=1.0.0
+PyYAML>=6.0
