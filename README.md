@@ -12,7 +12,8 @@ you'll paste one prompt into Claude Code and it does everything.
 > Set up my hackathon workspace in this folder. Do everything end-to-end without asking me
 > to confirm each step; only stop if something truly blocks you.
 >
-> 1. This folder is empty. Clone the starter kit into it from `<REPO_URL>` (clone into the
+> 1. This folder is empty. Clone the starter kit into it from
+>    `https://github.com/pietroleoncini-cyber/hackathon-claude-starter` (clone into the
 >    current directory, not a subfolder).
 > 2. Create a Python virtual environment in a folder named `.venv` and install the
 >    dependencies listed in `requirements.txt` into it.
