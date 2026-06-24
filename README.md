@@ -40,7 +40,7 @@ execution/                    ← shared framework helpers (no secrets)
   clarify-requirements/       ← (auto-invocable) ask clarifying questions before work
   write-prompt-contract/      ← (auto-invocable) define success/constraints/failure
   verify-with-subagents/      ← (auto-invocable) agent-reviews-agent quality loop
-  optimize-artifact/          ← (advanced, gated) hill-climb a prompt against an LLM-judge
+  autoresearch/               ← (advanced, gated) hill-climb a skill/prompt against an LLM-judge
                                  eval set — needs an ANTHROPIC_API_KEY in .env to run
 .env.example                  ← template; the setup copies it to .env (stays empty — no keys needed)
 requirements.txt              ← Python deps for the helpers

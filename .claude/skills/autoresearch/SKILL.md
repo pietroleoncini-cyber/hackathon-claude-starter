@@ -1,24 +1,24 @@
 ---
-name: optimize-artifact
+name: autoresearch
 description: >
   Autoresearch-style autonomous improvement loop for ANY prompt-like artifact — a skill's
   SKILL.md, an agent prompt, a routine prompt. You edit the artifact, score it against a fixed
   eval set with a frozen LLM-judge rubric, keep the change if the score improves (else git
-  revert), and repeat until a budget/stop condition is hit. Triggers on /optimize-artifact,
+  revert), and repeat until a budget/stop condition is hit. Triggers on /autoresearch,
   "improve this skill", "optimize this prompt/agent/routine", "tune the artifact against evals".
 allowed-tools: Read, Edit, Write, Bash
 disable-model-invocation: true
 preconditions:
   env: [ANTHROPIC_API_KEY]
-  files: [.claude/skills/optimize-artifact/scripts/optimize_artifact.py, .venv/bin/activate]
+  files: [.claude/skills/autoresearch/scripts/optimize_artifact.py, .venv/bin/activate]
 execution_contract: v1.0
 ---
 
-# Optimize Artifact
+# Autoresearch
 
 ## Goal
 Autonomously improve a prompt-like artifact by hill-climbing on a measurable objective — the
-generalization of [autoresearch](../autoresearch/SKILL.md) from `train.py`/`val_bpb` to any
+generalization of [karpathy/autoresearch](https://github.com/karpathy/autoresearch) from `train.py`/`val_bpb` to any
 editable artifact graded by an LLM-judge. YOU (Layer 2) propose each edit and decide keep/discard;
 the deterministic engine [scripts/optimize_artifact.py](scripts/optimize_artifact.py) (Layer 3)
 runs the artifact over the eval set, judges every output, and aggregates one comparable score.
@@ -49,7 +49,7 @@ Templates to copy: [references/config.template.yaml](references/config.template.
 Never jump to setup. Before anything, confirm all five required inputs exist. If a config file
 already exists, run the non-mutating check (it reports ALL gaps at once, touches nothing):
 ```bash
-.venv/bin/python .claude/skills/optimize-artifact/scripts/optimize_artifact.py check \
+.venv/bin/python .claude/skills/autoresearch/scripts/optimize_artifact.py check \
   --config .tmp/optimize/<run_tag>/config.yaml
 ```
 For each item the check reports as missing — or if there's no config yet — ask the user for it in a
@@ -69,7 +69,7 @@ are frozen for the whole run. Only proceed to Setup once `check` exits `ready: t
 2. Initialize — validates config, enforces the invariants above, creates branch `optimize/<run_tag>`,
    snapshots the baseline artifact, inits results.tsv:
    ```bash
-   .venv/bin/python .claude/skills/optimize-artifact/scripts/optimize_artifact.py init \
+   .venv/bin/python .claude/skills/autoresearch/scripts/optimize_artifact.py init \
      --config .tmp/optimize/<run_tag>/config.yaml
    ```
 3. Read the target artifact in full so you understand what you're editing.
@@ -78,7 +78,7 @@ are frozen for the whole run. Only proceed to Setup once `check` exits `ready: t
 1. **Baseline first.** Evaluate the UNMODIFIED artifact; this is your reference score. Record it as
    `baseline`. Never skip — every later keep/discard compares against the best-so-far.
    ```bash
-   .venv/bin/python .claude/skills/optimize-artifact/scripts/optimize_artifact.py evaluate \
+   .venv/bin/python .claude/skills/autoresearch/scripts/optimize_artifact.py evaluate \
      --config .tmp/optimize/<run_tag>/config.yaml --out .tmp/optimize/<run_tag>/last.json
    ```
 2. Note the current commit (your revert point).
@@ -92,7 +92,7 @@ are frozen for the whole run. Only proceed to Setup once `check` exits `ready: t
      edit removed complexity for an equal score, keep it; if it added complexity, discard it.
 6. **Record** the result:
    ```bash
-   .venv/bin/python .claude/skills/optimize-artifact/scripts/optimize_artifact.py record \
+   .venv/bin/python .claude/skills/autoresearch/scripts/optimize_artifact.py record \
      --config .tmp/optimize/<run_tag>/config.yaml --iteration <n> --score <score> \
      --status <baseline|keep|discard|error> --cost-usd <cost> --note "<what you tried>"
    ```

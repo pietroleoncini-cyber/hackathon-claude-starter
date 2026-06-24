@@ -27,7 +27,7 @@ Subcommands
 Config (YAML) — see references/config.template.yaml for the annotated version.
 Requires ANTHROPIC_API_KEY (read from .env or the environment).
 """
-# EXECUTION_CONTRACT = "v1.0"  # Must match .claude/skills/optimize-artifact/SKILL.md execution_contract
+# EXECUTION_CONTRACT = "v1.0"  # Must match .claude/skills/autoresearch/SKILL.md execution_contract
 
 import argparse
 import json
